@@ -1,2 +1,5 @@
 # SeqPref
-Sequence learning progress 
+
+Sequence learning progress
+
+## A Matlab project
