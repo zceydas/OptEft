@@ -1,11 +1,5 @@
-![Bakery Logo](https://i.imgur.com/ElIPCyF.jpg)
-
-# Bakery
-
-*FrontEnd Boilerplate - A simple and lightweight FrontEnd Starter kit based on Webpack and Handlebars supporting ES6 and SCSS*.
-
-## Features
-Bakery takes advantage of ***Webpack*** to build html pages (static websites) from ***Handlebars*** templates with support for ***SASS/SCSS*** and ***ES6***.
+# OptEft
+Templating system courtesy of https://github.com/dennib/Bakery.git
 
 **HIGHLIGHTS**
 - **Handlebars** (with layouts and partials)
@@ -28,13 +22,10 @@ Bakery takes advantage of ***Webpack*** to build html pages (static websites) fr
 
 ## Installation
 1. Clone the repo
-```bash
-git clone https://github.com/dennib/Bakery.git
-```
 
 2. Install npm packages
 ```bash
-cd Bakery && npm install
+npm install
 ```
   
   
