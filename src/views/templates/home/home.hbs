@@ -1,0 +1,72 @@
+{{#> main }}
+{{> header pageTitle="Welcome to OptEft!"}}
+<div id='app-wrapper' class='align-middle'>
+    <!-- infinite -->
+    <div id='welcome-screen' class='info-scene'>
+        <div class='message'>Welcome to OptEft!</div>
+        <button class='start-button'>Start</button>
+    </div>
+    <div id='scenes'>
+        <!-- maximum 18-RT secs, otherwise 2 s -->
+        <div id='fixation' class='scene'>
+            <div class='icon'>+</div>
+        </div>
+        <!-- maximum 18 s or response time -->
+        <div id='equations' class='scene'>
+            <form id='equation'>
+                <div id='equation-display' class='question message'>5+5</div>
+                <input type='number' name='answer-equations' autocomplete='off'>
+            </form>
+        </div>
+        <!-- 2 s -->
+        <div id='accuracy-display' class='scene'>
+            <div class='accuracy message'></div>
+        </div>
+        <!-- End Capacity Phase -->
+        <div id='endCapacity-screen' class='scene'>
+            <!-- Offer -->
+            <div id='offer-scene'>
+                <div>
+                    <h2 class='task-id'></h2>
+                    <h1 class='offer-title'><span class='offer-amount'> €</span>€</h1>
+                    <form id='offer-form'>
+                        <button id='offer-pass-button' class='offer-button' value='0' type='button'>Reject</button>
+                        <button id='offer-play-button' class='offer-button' value='1' type='button'>Accept</button>
+                    </form>
+                </div>
+            </div>
+            <div id='info-scene'>
+                <!-- <h2>You completed phase <span class='phaseNumber'></span>. Please answer this questioneer</h2> -->
+                <div>
+                    <h2 class='infoQuest-id'></h2>
+                    <!--  <h2>Please also answer the questions below regarding your experience during the arithmetic questionsin Block #</h2> -->
+                    <form id='questionaire-form'>
+                        <button id='questionaire-next-button' type='button'>Next</button>
+                        <button id='questionaire-submit-button' type='submit'>Submit</button>
+                    </form>
+                </div>
+            </div>
+            <div id='new-phase-scene'>
+                <div class='instructions'>End of Block #1. Click START to move onto the next block</div>
+                <button class='phase-continue-button'>Start</button>
+            </div>
+        </div>
+    </div>
+    <div id='exit-scene'>
+        <h1 class='message'>The experiment is over! Thank you for your participation!</h1>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div id='modal' class='modal'>
+
+    <!-- Modal content -->
+    <div class='modal-content'>
+        <p id='modal-content-text'></p>
+        <div class='text-center'>
+            <button class='modal-close'>Continue</button>
+        </div>
+    </div>
+
+</div>
+{{/main}}

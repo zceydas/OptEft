@@ -1,0 +1,544 @@
+$aVariable: blue;
+
+a {
+  color: $aVariable;
+}
+
+/* GORILLA OVERRIDES */
+div#preview-menu {
+  position: absolute;
+}
+
+/* MAIN.CSS */
+body {
+  background: #222;
+}
+
+html {
+  color: #222;
+  font-size: 1em;
+  line-height: 0;
+  background: rgb(5, 5, 5);
+}
+
+/*
+ * Remove text-shadow in selection highlight:
+ * https://twitter.com/miketaylr/status/12228805301
+ *
+ * Vendor-prefixed and regular ::selection selectors cannot be combined:
+ * https://stackoverflow.com/a/16982510/7133471
+ *
+ * Customize the background color to match your design.
+ */
+
+::-moz-selection {
+  background: #b3d4fc;
+  text-shadow: none;
+}
+
+::selection {
+  background: #b3d4fc;
+  text-shadow: none;
+}
+
+/*
+ * A better looking default horizontal rule
+ */
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0;
+}
+
+/*
+ * Remove the gap between audio, canvas, iframes,
+ * images, videos and the bottom of their containers:
+ * https://github.com/h5bp/html5-boilerplate/issues/440
+ */
+
+audio,
+canvas,
+iframe,
+img,
+svg,
+video {
+  vertical-align: middle;
+}
+
+/*
+ * Remove default fieldset styles.
+ */
+
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+ * Allow only vertical resizing of textareas.
+ */
+
+textarea {
+  resize: vertical;
+}
+
+/* ==========================================================================
+   Browser Upgrade Prompt
+   ========================================================================== */
+
+.browserupgrade {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+/* ==========================================================================
+   Helper classes
+   ========================================================================== */
+
+/*
+ * Hide visually and from screen readers
+ */
+
+.hidden {
+  display: none !important;
+}
+
+/*
+ * Hide only visually, but have it available for screen readers:
+ * https://snook.ca/archives/html_and_css/hiding-content-for-accessibility
+ *
+ * 1. For long content, line feeds are not interpreted as spaces and small width
+ *    causes content to wrap 1 word per line:
+ *    https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe
+ */
+
+.visuallyhidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  white-space: nowrap; /* 1 */
+}
+
+/*
+ * Extends the .visuallyhidden class to allow the element
+ * to be focusable when navigated to via the keyboard:
+ * https://www.drupal.org/node/897638
+ */
+
+.visuallyhidden.focusable:active,
+.visuallyhidden.focusable:focus {
+  clip: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  position: static;
+  width: auto;
+  white-space: inherit;
+}
+
+/*
+ * Hide visually and from screen readers, but maintain layout
+ */
+
+.invisible {
+  visibility: hidden;
+}
+
+/*
+ * Clearfix: contain floats
+ *
+ * For modern browsers
+ * 1. The space content is one way to avoid an Opera bug when the
+ *    `contenteditable` attribute is included anywhere else in the document.
+ *    Otherwise it causes space to appear at the top and bottom of elements
+ *    that receive the `clearfix` class.
+ * 2. The use of `table` rather than `block` is only necessary if using
+ *    `:before` to contain the top-margins of child elements.
+ */
+
+.clearfix:before,
+.clearfix:after {
+  content: ' '; /* 1 */
+  display: table; /* 2 */
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+/* ==========================================================================
+   EXAMPLE Media Queries for Responsive Design.
+   These examples override the primary ('mobile first') styles.
+   Modify as content requires.
+   ========================================================================== */
+
+@media only screen and (min-width: 35em) {
+  /* Style adjustments for viewports that meet the condition */
+}
+
+@media print, (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 1.25dppx), (min-resolution: 120dpi) {
+  /* Style adjustments for high resolution devices */
+}
+
+/* ==========================================================================
+   Print styles.
+   Inlined to avoid the additional HTTP request:
+   https://www.phpied.com/delay-loading-your-print-css/
+   ========================================================================== */
+
+@media print {
+  *,
+  *:before,
+  *:after {
+    background: transparent !important;
+    color: #000 !important;
+    blackprintsfaster-webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+
+  a[href]:after {
+    content: ' (' attr(href) ')';
+  }
+
+  abbr[title]:after {
+    content: ' (' attr(title) ')';
+  }
+
+  /*
+     * Don't show links that are fragment identifiers,
+     * or use the `javascript:` pseudo protocol
+     */
+
+  a[href^='#']:after,
+  a[href^='javascript:']:after {
+    content: '';
+  }
+
+  pre {
+    white-space: pre-wrap !important;
+  }
+  pre,
+  blockquote {
+    border: 1px solid #999;
+    page-break-inside: avoid;
+  }
+
+  /*
+     * Printing Tables:
+     * http://css-discuss.incutio.com/wiki/Printing_Tables
+     */
+
+  thead {
+    display: table-header-group;
+  }
+
+  tr,
+  img {
+    page-break-inside: avoid;
+  }
+
+  p,
+  h2,
+  h3 {
+    orphans: 3;
+    widows: 3;
+  }
+
+  h2,
+  h3 {
+    page-break-after: avoid;
+  }
+}
+
+/* STYLE.CSS */
+#gorilla {
+  background: #222;
+  margin: 0 0 60px 0;
+}
+
+#gorilla {
+  #app-wrapper {
+    text-align: center;
+    vertical-align: middle;
+    height: 100%;
+    color: white;
+    background-color: black;
+    font-size: 40px;
+    padding: 0 40px;
+  }
+
+  html {
+    padding: 0px;
+  }
+
+  body {
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    margin-top: 40px;
+    background-color: black;
+  }
+
+  input[type='text'],
+  select {
+    width: 30%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    box-sizing: border-box;
+  }
+  input[type='submit'],
+  button {
+    background-color: #4caf50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+
+  #welcome-screen {
+    font-size: 36px;
+  }
+
+  #welcome-screen h1 {
+    font-size: 60px;
+  }
+
+  .message {
+    margin-bottom: 50px;
+  }
+
+  .scene {
+    display: none;
+  }
+
+  #fixation {
+    display: none;
+  }
+
+  #equations,
+  #offer-scene,
+  #fixation,
+  #accuracy-display,
+  .instructions {
+    margin-top: 15%;
+  }
+
+  .phase-continue-button {
+    margin-top: 15%;
+  }
+
+  /* Hide arrows on number imput */
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+
+  .success {
+    color: #4caf50;
+  }
+
+  .error {
+    color: red;
+  }
+
+  .infoQuest-id {
+    margin-bottom: 97px;
+  }
+
+  .slider {
+    -webkit-appearance: none;
+    width: 70%;
+    height: 15px;
+    border-radius: 5px;
+    background: #fff;
+    outline: none;
+    -webkit-transition: 0.2s;
+    transition: opacity 0.2s;
+    margin: 20px 10px;
+  }
+
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #4caf50;
+    border: 2px solid #fff;
+    cursor: pointer;
+  }
+
+  .slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #4caf50;
+    cursor: pointer;
+  }
+
+  .min-text,
+  .max-text {
+    display: inline-block;
+    color: #4caf50;
+    font-size: x-large;
+  }
+
+  /* .min-text {
+      left: 100px;
+      top: 345px;
+      font-size: x-large;
+      color: #4caf50;
+    }
+    .max-text {
+      right: 125px;
+      top: 345px;
+      font-size: x-large;
+      color: #4caf50;
+    } */
+  .middle-text {
+    width: 100%;
+    text-align: center;
+    font-size: large;
+  }
+
+  #questionaire-next-button {
+    border-radius: 10px;
+    position: relative;
+    text-align: center;
+    font-size: x-large;
+  }
+
+  .questionaire-input {
+    margin-bottom: 60px;
+  }
+
+  #questionaire-form {
+    padding: 0 20% 0;
+    margin-top: 80px;
+  }
+
+  .questionaire-layout {
+    display: none;
+  }
+
+  .questionaire-layout label {
+    height: 170px;
+  }
+
+  .offer-button {
+    border-radius: 10px;
+    position: relative;
+    text-align: center;
+    font-size: x-large;
+  }
+
+  .offer-title {
+    height: 60px;
+    font-size: 60px;
+    display: block;
+    margin: 60px;
+  }
+
+  button {
+    -moz-transition: all 0.2s ease-in;
+    -o-transition: all 0.2s ease-in;
+    -webkit-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
+    margin: 60px 20px;
+  }
+
+  button:hover {
+    background-color: #ccc;
+  }
+
+  button:focus {
+    background-color: seagreen;
+    outline: none;
+  }
+
+  /* The Modal (background) */
+  #modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  }
+
+  /* Modal Content */
+  .modal-content {
+    background-color: #303030;
+    margin: auto auto 60px auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    color: white;
+    font-size: 32px;
+    border-radius: 20px;
+  }
+
+  #modal-content-text {
+    font-size: 22px;
+  }
+
+  /* The Close Button */
+  .modal-close {
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .modal-close:hover,
+  .modal-close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .text-left {
+    text-align: left;
+  }
+}
