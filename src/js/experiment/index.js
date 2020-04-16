@@ -23,13 +23,12 @@ export function optEft() {
   const $EQUATION_FORM = $('form#equation')
   const $INPUT_ANSWER = $EQUATION_FORM.find(':input').eq(0)
   const $ACCURACY_DISPLAY = $('#accuracy-display')
-  const $OFFERSCENE = $('#offer-scene')
   const $INFOSCENE = $('#info-scene')
   const $NEWPHASESCENE = $('#new-phase-scene')
   const $MODAL = $('#modal')
   const maxBlock = 6 // should be 10
   const noTrialsToAvg = 5 // this is the number of trials needed in Capacity _phase to move on to the next difficulty level
-  const maxTrials = 10 // maximum number of trials to present in the experimental conditions
+  const maxTrials = 2 // maximum number of trials to present in the experimental conditions
   let _expPhases = [1, 2, 3, 4]
   let _colorNames = ['orange', 'green', 'blue', 'red']
   _colorNames = shuffle(_colorNames)
@@ -78,23 +77,8 @@ export function optEft() {
   let _avgCounter = []
   let _responseData = JSON.parse(JSON.stringify(_$RESPONSEMODEL))
   let _phase = 0
-  let _offers = []
-  let _offerAmount = offerAmount()
-  let _offerAmountCount = 0
-  let _offerStartTime = 0
-  var _my_data
-  // _OfferAmount are the offer amounts for the discounting phase
-  // each offer is presented 3 times, and needs to be shuffled at each phase
-  // should be i< 31
-  function offerAmount() {
-    let offerAmount = []
-    for (var i = 0; i < 31; i++) {
-      offerAmount[i] = Math.round((i * 0.1 + 0.1) * 100) / 100
-    }
-    // offerAmount = offerAmount.concat(offerAmount, offerAmount)
 
-    return offerAmount
-  }
+  var _my_data
 
   function shuffle(a) {
     for (let i = a.length - 1; i > 0; i--) {
@@ -145,7 +129,7 @@ export function optEft() {
         if (_trialcounter % noTrialsToAvg === 0 && _phase === 1) {
           // below increases the difficulty of the task every 8 trials
           $INFOSCENE.hide()
-          $OFFERSCENE.hide()
+          // $OFFERSCENE.hide()
           const capacityReached = hasReachedCapacity()
           if (capacityReached) {
             sceneIndex = 2
@@ -158,7 +142,7 @@ export function optEft() {
         break
       case 3:
         // _trialcounter = 0_
-        _offerAmount = shuffle(_offerAmount)
+        //_offerAmount = shuffle(_offerAmount)
         // if (_phase > 1) {
         //   // when the previous phase ends, a new phase with a new difficulty level begins
         //   _currentLevel = determinePhaseType(_phase)
@@ -174,7 +158,7 @@ export function optEft() {
             //  gorillaTaskBuilder.forceAdvance()
             DisplayFinish() // I don't like this.
           } else {
-            setupOffer(0)
+            //  setupOffer(0)
             setupQuestionaire()
             _currentLevel = determinePhaseType()
           }
@@ -344,13 +328,13 @@ export function optEft() {
     return parsed // Could be undefined!
   }
 
-  function saveOffer() {
-    _$SESSIONMODEL.phases[_phase - 1].offers = _offers
-    // SAVE: Local development
-    localStorage.setItem('SessionData', JSON.stringify(_$SESSIONMODEL))
-    // SAVE: Gorilla API
-    _my_data = safelyParseJSON(localStorage.getItem('SessionData'))
-  }
+  // function saveOffer() {
+  //   _$SESSIONMODEL.phases[_phase - 1].offers = _offers
+  //   // SAVE: Local development
+  //   localStorage.setItem('SessionData', JSON.stringify(_$SESSIONMODEL))
+  //   // SAVE: Gorilla API
+  //   _my_data = safelyParseJSON(localStorage.getItem('SessionData'))
+  // }
 
   function saveResponse() {
     // performance during arithmetic summations
@@ -442,36 +426,6 @@ export function optEft() {
     $('#fixation').find('.icon').text(letter)
   }
 
-  function setupOffer(i) {
-    if (i === 0) {
-      $ACCURACY_DISPLAY.hide()
-      $NEWPHASESCENE.hide()
-      $INFOSCENE.hide()
-      useModal(_$INSTRUCTIONS.offer)
-      $OFFERSCENE.show()
-    }
-    // TODO if _offerAmount reached hide this form
-    if (i === _offerAmount.length) {
-      // console.log()
-      // $INFOSCENE.hide()
-      $OFFERSCENE.hide()
-      inventoryQuestionText()
-      $INFOSCENE.show()
-      _offerAmountCount = -1
-      saveOffer()
-    } else {
-      $OFFERSCENE.find('.offer-title').hide()
-
-      $OFFERSCENE.find('.offer-amount').html(_offerAmount[i].toFixed(2))
-      _offerStartTime = performance.now() //Date.now()
-      $OFFERSCENE.find('.offer-title').fadeIn(() => {
-        $('.offer-button').fadeIn()
-        $OFFERSCENE.find('.task-id').html('Do you accept to repeat ' + _taskID + ' for the offer amount:')
-      })
-    }
-    _offerAmountCount += 1
-  }
-
   function setupQuestionaire() {
     let currentEq = 0
     const form = $('#questionaire-form')
@@ -490,6 +444,12 @@ export function optEft() {
         </div>
       `)
       } else if (i === 9) {
+        $ACCURACY_DISPLAY.hide()
+        $NEWPHASESCENE.hide()
+        $INFOSCENE.hide()
+        useModal(_$INSTRUCTIONS.offer)
+        inventoryQuestionText()
+        $INFOSCENE.show()
         // !!! start here the output doesn't pop up
         form.prepend(`
         <div class="questionaire-layout">
@@ -581,31 +541,31 @@ export function optEft() {
     transition(0)
   })
 
-  $('.offer-button').on('click keypress', (e) => {
-    e.preventDefault()
+  // $('.offer-button').on('click keypress', (e) => {
+  //   e.preventDefault()
 
-    const currentOAC = _offerAmountCount
-    setupOffer(_offerAmountCount)
+  //   const currentOAC = _offerAmountCount
+  //   setupOffer(_offerAmountCount)
 
-    _offers.push({
-      amount: _offerAmount[currentOAC - 1],
-      choice: e.target.getAttribute('value'),
-      RT: performance.now() - _offerStartTime,
-    })
-    gorilla.metric({
-      offerAmount: _offerAmount[currentOAC - 1],
-      offerChoice: e.target.getAttribute('value'),
-      offerRT: performance.now() - _offerStartTime,
-      phase: _phase,
-      currentLevel: _previousLevel,
-      taskType: _previousTaskType,
-    })
+  //   _offers.push({
+  //     amount: _offerAmount[currentOAC - 1],
+  //     choice: e.target.getAttribute('value'),
+  //     RT: performance.now() - _offerStartTime,
+  //   })
+  //   gorilla.metric({
+  //     offerAmount: _offerAmount[currentOAC - 1],
+  //     offerChoice: e.target.getAttribute('value'),
+  //     offerRT: performance.now() - _offerStartTime,
+  //     phase: _phase,
+  //     currentLevel: _previousLevel,
+  //     taskType: _previousTaskType,
+  //   })
 
-    if (_offers[_offers.length - 1].choice === '1') {
-      _choiceResult.push([_offers[_offers.length - 1].amount, _expPhases[_phase - 2]])
-    }
-    $('.offer-button').hide()
-  })
+  //   if (_offers[_offers.length - 1].choice === '1') {
+  //     _choiceResult.push([_offers[_offers.length - 1].amount, _expPhases[_phase - 2]])
+  //   }
+  //   $('.offer-button').hide()
+  // })
 
   // show answer accuracy
   $EQUATION_FORM.submit((e) => {
