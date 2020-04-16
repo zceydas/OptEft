@@ -4,6 +4,8 @@
 import gorilla from '../lib/gorilla-mock'
 import $ from 'jquery'
 
+import hbsOfferScene from './offer-scene/offer-scene.hbs'
+
 import {
   _$ACCURACY,
   _$CONFIG,
@@ -20,6 +22,7 @@ import { generateEquation } from './equations.js'
 
 export function optEft() {
   const $SCENES = $('.scene')
+  const $SCENE_TEMPLATE = $('#scene-template')
   const $EQUATION_FORM = $('form#equation')
   const $INPUT_ANSWER = $EQUATION_FORM.find(':input').eq(0)
   const $ACCURACY_DISPLAY = $('#accuracy-display')
@@ -128,7 +131,7 @@ export function optEft() {
       case 1:
         $('#equation-display').text(_currentEquation)
         time = 18000
-        setTimeout(function () {
+        setTimeout(function() {
           $INPUT_ANSWER.focus()
         }, 10)
         _equationStart = performance.now() // Date.now()
@@ -185,7 +188,7 @@ export function optEft() {
 
     if (sceneIndex !== 3) {
       // hide the current scene once the deadline passes
-      _clock = setTimeout(function () {
+      _clock = setTimeout(function() {
         timer(sceneIndex + 1)
       }, time)
     }
@@ -312,7 +315,7 @@ export function optEft() {
     localStorage.setItem('SessionData', JSON.stringify(_$SESSIONMODEL))
 
     let inArr = _$SESSIONMODEL.phases[_phase - 1].inventory
-    inArr.forEach((q) => {
+    inArr.forEach(q => {
       gorilla.metric({
         questionName: q.name,
         questions: q.value,
@@ -428,7 +431,7 @@ export function optEft() {
     $INPUT_ANSWER.val('')
     $ACCURACY_DISPLAY.text(accuracy.label)
 
-    Object.keys(_$ACCURACY).forEach((o) => {
+    Object.keys(_$ACCURACY).forEach(o => {
       $ACCURACY_DISPLAY.removeClass(_$ACCURACY[o].class)
     })
 
@@ -439,7 +442,9 @@ export function optEft() {
   }
 
   function setFixationIcon(letter = '+') {
-    $('#fixation').find('.icon').text(letter)
+    $('#fixation')
+      .find('.icon')
+      .text(letter)
   }
 
   function setupOffer(i) {
@@ -516,7 +521,7 @@ export function optEft() {
     ql.eq(currentEq).show()
     submitBtn.hide()
 
-    btn.show().click((e) => {
+    btn.show().click(e => {
       e.preventDefault()
       currentEq += 1
       ql.hide()
@@ -568,20 +573,20 @@ export function optEft() {
   $('#exit-scene').hide()
 
   // transition starts when the button is pressed (welcome screen)
-  $('.start-button').on('click keypress', (e) => {
+  $('.start-button').on('click keypress', e => {
     e.preventDefault()
     $('#welcome-screen').hide()
     transition(0)
   })
 
   // transition starts when the button is pressed (welcome screen)
-  $('.phase-continue-button').on('click keypress', (e) => {
+  $('.phase-continue-button').on('click keypress', e => {
     e.preventDefault()
     $NEWPHASESCENE.hide()
     transition(0)
   })
 
-  $('.offer-button').on('click keypress', (e) => {
+  $('.offer-button').on('click keypress', e => {
     e.preventDefault()
 
     const currentOAC = _offerAmountCount
@@ -608,7 +613,7 @@ export function optEft() {
   })
 
   // show answer accuracy
-  $EQUATION_FORM.submit((e) => {
+  $EQUATION_FORM.submit(e => {
     e.preventDefault()
     if ($INPUT_ANSWER.val() === '') {
       return
@@ -621,20 +626,24 @@ export function optEft() {
   //   })
 
   // show answer accuracy
-  $('#questionaire-submit-button').on('click keypress', (e) => {
+  $('#questionaire-submit-button').on('click keypress', e => {
     e.preventDefault()
     saveInventory($('.slider').serializeArray())
     $INFOSCENE.hide()
-    $('#questionaire-form').find('.questionaire-layout').remove()
+    $('#questionaire-form')
+      .find('.questionaire-layout')
+      .remove()
     startPhase()
     newPhaseSceneText() // the function that pastes the phase number in the info text
     $NEWPHASESCENE.show()
   })
 
-  $('#welcome-screen').find('.message').html(_$INSTRUCTIONS.welcome)
+  $('#welcome-screen')
+    .find('.message')
+    .html(_$INSTRUCTIONS.welcome)
 
   // Close modal
-  window.onclick = (e) => {
+  window.onclick = e => {
     if ($MODAL.is(e.target) || $(e.target).hasClass('modal-close')) {
       $MODAL.hide()
     }
