@@ -130,20 +130,30 @@ export const _$INSTRUCTIONS = {
       the next question. Now, please put your phones away, and click START to begin.
     </div>`,
 
-  offer: `Now we would like to make an offer to you: 
+  offer1: `Now we would like to make an offer to you: 
     <br/> <br/>
-    The final block (Block # 6) will make extra
-    money for you and will only consist of the TYPE of arithmetic questions of YOUR CHOICE. 
-    In the next screen, you will get to Accept or Reject an offer.
+    We will give you an extra 3.1 Euros BONUS. In exchange, you will complete an additional
+    block (Block # 6) of arithmetic questions. 
     <br/> <br/>
-    By ACCEPTing an offer, you indicate that you
-    accept to repeat this Block as your final block (Block # 6) in exchange for the offered amount.
+    But you will have the option to decide the
+    type of arithmetic questions the last block will consist of.  
+    <br/> <br/>
+    In the next screen, you will get to indicate how much of this extra 3.1 Euros you would
+    be willing to let go to AVOID the type of aritmetic question you just performed.
+    And we will ask the same question to you after you complete EACH BLOCK : each question type.
+    <br/> <br/>
+    Based on how much of your money you'd be willing to spend on avoiding each question type,
+    we will determine the LIKELIHOOD you will solve that question type for your last block. 
+    As a result, you will receive the amount you chose to discount for that question type. 
+    <br/> <br/>
+    Please note that your accuracy in performing the arithmetic questions
+    DOES NOT AFFECT whether you will earn this BONUS amount as long as you TRY YOUR BEST.`,
 
-    If you REJECT all offers, we will randomly determine the amount of your extra pay and
-    the type of arithmetic questions you need to complete in Block # 6.
+  offerRest: `Please make the same BONUS decision for this question type and decide the
+  type of arithmetic questions the last block will consist of. 
     <br/> <br/>
-    Please note that your accuracy in Block # 6
-    DOES NOT AFFECT whether you will earn the offered amount as long as you TRY YOUR BEST.`,
+    Please keep in mind that your accuracy in performing the arithmetic questions
+    DOES NOT AFFECT whether you will earn this BONUS amount as long as you TRY YOUR BEST.`,
 
   exit: `The experiment is over! 
     <br/> <br/>
