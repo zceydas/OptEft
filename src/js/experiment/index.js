@@ -490,13 +490,9 @@ export function optEft() {
         submitBtn.show()
 
         if (_phase === maxBlock - 1) {
-          const randomPick = _choiceResult[Math.floor(Math.random() * _choiceResult.length)]
-          console.log('RANDOM_PICK: ', randomPick)
-          _expPhases.push(randomPick[1]) //
-          _extraMoney = randomPick[0]
+          _expPhases.push(Math.floor(Math.random() * 4) + 1) // randomly select one of the tasks
           _currentLevel = determinePhaseType()
           console.log('ExpPhases:', _expPhases)
-          console.log('ExtraMoney: ', _extraMoney)
         }
       }
     })
