@@ -299,6 +299,7 @@ export function optEft() {
 
     //_OfferChoicePick.push([Math.round(((3.1 - inArr[0].value) / 3.1) * 10), _expPhases[_phase - 2]])
     console.log(_OfferChoicePick)
+    console.log(inArr)
     inArr.forEach((q) => {
       gorilla.metric({
         questionName: q.name,
@@ -409,25 +410,12 @@ export function optEft() {
   function setupQuestionaire() {
     let currentEq = 0
     const form = $('#questionaire-form')
+    $ACCURACY_DISPLAY.hide()
+    $NEWPHASESCENE.hide()
+    $INFOSCENE.hide()
+    inventoryQuestionText()
     _$CONFIG.inventoryQuestions.forEach((q, i) => {
-      if (i < 9) {
-        inventoryQuestionText()
-        form.prepend(`
-        <div class="questionaire-layout">
-          <label for="qf-${i}"><h1>${q}</h1></label>
-          <br />
-          <div class="questionaire-input">
-            <span class="min-text">Disagree</span>
-            <input type="range" class="slider" id="qf-${i}" name="qf-${i}" min="0" max="100">
-            <span class="max-text">Agree</span>
-          </div>
-        </div>
-        </div>
-      `)
-      } else if (i === 9) {
-        $ACCURACY_DISPLAY.hide()
-        $NEWPHASESCENE.hide()
-        $INFOSCENE.hide()
+      if (i === 9) {
         if (_phase === 2) {
           useModal(_$INSTRUCTIONS.offer1)
         } else if (_phase > 2) {
@@ -453,6 +441,19 @@ export function optEft() {
           console.log($('.slider-value'))
           $('.slider-value').html($(e.target).val() + ' €')
         })
+      } else {
+        form.prepend(`
+        <div class="questionaire-layout">
+          <label for="qf-${i}"><h1>${q}</h1></label>
+          <br />
+          <div class="questionaire-input">
+            <span class="min-text">Disagree</span>
+            <input type="range" class="slider" id="qf-${i}" name="qf-${i}" min="0" max="100">
+            <span class="max-text">Agree</span>
+          </div>
+        </div>
+        </div>
+      `)
       }
     })
 
@@ -470,7 +471,7 @@ export function optEft() {
       ql.hide()
       ql.eq(currentEq).show()
 
-      if (currentEq === 8) {
+      if (currentEq === 9) {
         btn.hide()
         // submitBtn.show()
         // $INFOSCENE.hide()
