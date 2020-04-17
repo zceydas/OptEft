@@ -28,13 +28,12 @@ export function optEft() {
   const $MODAL = $('#modal')
   const maxBlock = 6 // should be 10
   const noTrialsToAvg = 5 // this is the number of trials needed in Capacity _phase to move on to the next difficulty level
-  const maxTrials = 2 // maximum number of trials to present in the experimental conditions
+  const maxTrials = 10 // maximum number of trials to present in the experimental conditions
   let _expPhases = [1, 2, 3, 4]
   let _colorNames = ['orange', 'green', 'blue', 'red']
   _colorNames = shuffle(_colorNames)
   let _taskType = 'Capacity'
   let _previousTaskType = null
-  let _choiceResult = []
   let _currentScene = null
   let _taskID = 'Block #2'
   let $EQUATIONDISPLAY = $('#equation-display')
@@ -54,7 +53,7 @@ export function optEft() {
     [0.2, 8],
     [0, 9],
   ]
-
+  let _OfferChoicePick = []
   let _fitresult = regression.polynomial(data, { order: 3 })
   let _easyTaskDifficulty = Math.round(_fitresult.predict(0.75)[1])
   let _intermediateTaskDifficulty = Math.round(_fitresult.predict(0.5)[1])
@@ -89,21 +88,21 @@ export function optEft() {
   }
 
   function transition(sceneIndex) {
-    let time = 1000 //2000 + 1000 * Math.random()
+    let time = 2000 + 1000 * Math.random()
     _currentScene = $SCENES.eq(sceneIndex)
     _currentScene.show()
     switch (sceneIndex) {
       case 0:
         if (_phase > 1 && _trialcounter === 0) {
           // console.log('_phase > 1 && _trialcounter === 1')
-          time = 1000 //4000 + 1000 * Math.random()
+          time = 4000 + 1000 * Math.random()
           setFixationIcon(_blockName)
           setTimeout(() => {
             setFixationIcon('+')
           }, 1999)
         } else if (_phase > 1 && _trialcounter > 0) {
           //  console.log('_phase > 1 && _trialcounter > 1')
-          time = 1000 // 500 + 18000 - _RT
+          time = 500 + 18000 - _RT
           setFixationIcon('+')
         }
         _trialcounter = _trialcounter + 1
@@ -129,7 +128,6 @@ export function optEft() {
         if (_trialcounter % noTrialsToAvg === 0 && _phase === 1) {
           // below increases the difficulty of the task every 8 trials
           $INFOSCENE.hide()
-          // $OFFERSCENE.hide()
           const capacityReached = hasReachedCapacity()
           if (capacityReached) {
             sceneIndex = 2
@@ -141,11 +139,6 @@ export function optEft() {
         }
         break
       case 3:
-        // _trialcounter = 0_
-        //_offerAmount = shuffle(_offerAmount)
-        // if (_phase > 1) {
-        //   // when the previous phase ends, a new phase with a new difficulty level begins
-        //   _currentLevel = determinePhaseType(_phase)
         // if it's beyond the Capacity phase and the maximum number of experimental trials are reached
         if (_trialcounter === maxTrials && _phase > 1) {
           // start the offer and inventory epoch and increment the phase
@@ -158,7 +151,6 @@ export function optEft() {
             //  gorillaTaskBuilder.forceAdvance()
             DisplayFinish() // I don't like this.
           } else {
-            //  setupOffer(0)
             setupQuestionaire()
             _currentLevel = determinePhaseType()
           }
@@ -190,7 +182,6 @@ export function optEft() {
       _$SESSIONMODEL.phases[index] = {
         responses: [],
         tasklevels: [],
-        offers: [],
         inventory: [],
       }
     }
@@ -287,6 +278,14 @@ export function optEft() {
     _currentLevel = determinePhaseType()
   }
 
+  function fillArray(value, len) {
+    //var arr = []
+    for (var i = 0; i < len; i++) {
+      _OfferChoicePick.push(value)
+    }
+    return _OfferChoicePick
+  }
+
   function saveInventory(questions) {
     // TODO: Keep track of phase increment better!
     _$SESSIONMODEL.phases[_phase - 1].inventory = questions
@@ -294,8 +293,12 @@ export function optEft() {
 
     // SAVE: localStorage for dev env
     localStorage.setItem('SessionData', JSON.stringify(_$SESSIONMODEL))
-
     let inArr = _$SESSIONMODEL.phases[_phase - 1].inventory
+
+    _OfferChoicePick = fillArray(_expPhases[_phase - 2], Math.round(((3.1 - inArr[0].value) / 3.1) * 10))
+
+    //_OfferChoicePick.push([Math.round(((3.1 - inArr[0].value) / 3.1) * 10), _expPhases[_phase - 2]])
+    console.log(_OfferChoicePick)
     inArr.forEach((q) => {
       gorilla.metric({
         questionName: q.name,
@@ -328,14 +331,6 @@ export function optEft() {
     return parsed // Could be undefined!
   }
 
-  // function saveOffer() {
-  //   _$SESSIONMODEL.phases[_phase - 1].offers = _offers
-  //   // SAVE: Local development
-  //   localStorage.setItem('SessionData', JSON.stringify(_$SESSIONMODEL))
-  //   // SAVE: Gorilla API
-  //   _my_data = safelyParseJSON(localStorage.getItem('SessionData'))
-  // }
-
   function saveResponse() {
     // performance during arithmetic summations
     _RT = performance.now() - _equationStart // Date.now() - _equationStart
@@ -365,21 +360,6 @@ export function optEft() {
       RT: 0,
       equation: '',
     }
-
-    // _expPhases // experimental task order under user
-
-    // // offer phase data
-    // _offerData = {
-    //   trial: 0,
-    //   offerAmount: 0,
-    //   accept: 0,
-    // }
-
-    // // inventory responses
-    // _inventoryData = {
-    //   question: '',
-    //   response: 0,
-    // }
 
     // SAVE: Local dev
     localStorage.setItem('SessionData', JSON.stringify(_$SESSIONMODEL))
@@ -431,6 +411,7 @@ export function optEft() {
     const form = $('#questionaire-form')
     _$CONFIG.inventoryQuestions.forEach((q, i) => {
       if (i < 9) {
+        inventoryQuestionText()
         form.prepend(`
         <div class="questionaire-layout">
           <label for="qf-${i}"><h1>${q}</h1></label>
@@ -447,8 +428,11 @@ export function optEft() {
         $ACCURACY_DISPLAY.hide()
         $NEWPHASESCENE.hide()
         $INFOSCENE.hide()
-        useModal(_$INSTRUCTIONS.offer)
-        inventoryQuestionText()
+        if (_phase === 2) {
+          useModal(_$INSTRUCTIONS.offer1)
+        } else if (_phase > 2) {
+          useModal(_$INSTRUCTIONS.offerRest)
+        }
         $INFOSCENE.show()
         // !!! start here the output doesn't pop up
         form.prepend(`
@@ -457,14 +441,18 @@ export function optEft() {
           <br />
           <div class="questionaire-input">
             <span class="min-text">0.1 €</span>
-            <input type="range" class="slider" id="qf-${i}" name="qf-${i}" min="0.1" max="3.1" step="0.1">
-            <span class="max-text">3.1 €</span>
+            <input type="range" class="slider" id="qf-${i}" name="qf-${i}" min="0.1" max="3" step="0.1">
+            <span class="max-text">3 €</span>
             <div class="slider-value"></div>
           </div>
         </div>
         </div>
       `)
-        // <output name="rangeVal">1.5</output>
+        // this below code shows the selected offer amount online
+        $('.slider').on('input', (e) => {
+          console.log($('.slider-value'))
+          $('.slider-value').html($(e.target).val() + ' €')
+        })
       }
     })
 
@@ -490,7 +478,7 @@ export function optEft() {
         submitBtn.show()
 
         if (_phase === maxBlock - 1) {
-          _expPhases.push(Math.floor(Math.random() * 4) + 1) // randomly select one of the tasks
+          _expPhases.push(_OfferChoicePick[Math.floor(Math.random() * _OfferChoicePick.length)]) // randomly select one of the tasks
           _currentLevel = determinePhaseType()
           console.log('ExpPhases:', _expPhases)
         }
@@ -512,7 +500,7 @@ export function optEft() {
   function inventoryQuestionText() {
     $INFOSCENE
       .find('.infoQuest-id')
-      .text('Please also state your agreement on the statements below regarding your experience during the ' + _taskID)
+      .text('Please state your agreement on the statements below regarding your experience during the ' + _taskID)
   }
 
   function DisplayFinish() {
@@ -537,32 +525,6 @@ export function optEft() {
     transition(0)
   })
 
-  // $('.offer-button').on('click keypress', (e) => {
-  //   e.preventDefault()
-
-  //   const currentOAC = _offerAmountCount
-  //   setupOffer(_offerAmountCount)
-
-  //   _offers.push({
-  //     amount: _offerAmount[currentOAC - 1],
-  //     choice: e.target.getAttribute('value'),
-  //     RT: performance.now() - _offerStartTime,
-  //   })
-  //   gorilla.metric({
-  //     offerAmount: _offerAmount[currentOAC - 1],
-  //     offerChoice: e.target.getAttribute('value'),
-  //     offerRT: performance.now() - _offerStartTime,
-  //     phase: _phase,
-  //     currentLevel: _previousLevel,
-  //     taskType: _previousTaskType,
-  //   })
-
-  //   if (_offers[_offers.length - 1].choice === '1') {
-  //     _choiceResult.push([_offers[_offers.length - 1].amount, _expPhases[_phase - 2]])
-  //   }
-  //   $('.offer-button').hide()
-  // })
-
   // show answer accuracy
   $EQUATION_FORM.submit((e) => {
     e.preventDefault()
@@ -571,10 +533,6 @@ export function optEft() {
     }
     timer(2)
   })
-
-  //   $('.slider').on('input', (e) => {
-  //     $('.slider-value').html($(e.target).val())
-  //   })
 
   // show answer accuracy
   $('#questionaire-submit-button').on('click keypress', (e) => {
