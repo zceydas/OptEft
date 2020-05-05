@@ -19,7 +19,7 @@ export const _$CONFIG = {
     'During the task all thoughts on task-irrelevant issues that I am personally concerned with were extinguished.',
     'During the task my consciousness was completely focused on solving the math calculations.',
     'Time passed really quickly.',
-    'How much money would you be willing to forego to avoid repeating this block?',
+    'How much are you willing to spend to AVOID repeating this block? Indicate below:',
   ],
 }
 
@@ -108,56 +108,106 @@ export const _$SCENES = {
 
 export const _$INSTRUCTIONS = {
   welcome: `<div class="text-center"><h1>Welcome!</h1></div>
-    <br />
-    <div class="text-left">
+      <div class="text-left">
+      READ the instructions carefully!
+      <br />
+      <br />
       This experiment consists of 6 Blocks.
       In each Block, you will solve arithmetic questions of varying difficulty.
-      Block # 1 will be the longest one  and take around 30 minutes. Following Blocks will take around
+      Block # 1 will be the longest one and might take up to 30 minutes. Subsequent Blocks will take around
       5 minutes each.
       <br />
       <br />
-      In this task, we are merely interested 
-      in how much you like or dislike solving arithmetic questions. Your accuracy does not affect
-      your payment, and your performance does not change the course of the experiment.
-      So, please do not use calculators, or pen & paper to solve the questions.
-      If you use a calculator or show any unusual behavior, our algorithm will flag your participation.
+      In this task, we are interested in the EFFORT you put in solving each question and
+      how much you LIKE or DISLIKE solving them. Your ACCURACY does not affect
+      your payment, and your performance does not change the course of the experiment. 
+      Although your honest effort matters!
+      So, DO NOT use calculators, pen & paper to solve the questions or guess the answers.
+      If you use a calculator or show any unusual behavior, our algorithm will REJECT your participation
+      and you will NOT get paid.
+    </div>`,
+
+  welcome2: `
+    <div class="text-left">
+      <br />
       <br />
       <br />
       On each trial, first you will see a fixation cross (+).
       During this screen, keep your eyes on the screen and 
       wait for the next question to show up. Then solve the question in your mind. 
-      Enter your answer in the blank field, and then press ENTER to move onto
-      the next question. Now, please put your phones away, and click START to begin.
+      Be as fast and accurate as possible. 
+      Enter your answer in the blank field, and then press ENTER to submit your response. 
+      Please note: failing to follow these instuctions will lead to the rejection of your 
+      participation. Now, please put your phones away and put your browser in FULL SCREEN MODE, 
+      then click START to begin.
     </div>`,
 
-  offer1: `Now we would like to make an offer to you: 
+  offer1: ` <div class="text-left">
+    We appreciate your participation in our study and we would like to 
+    make your experience even better!
+    So we decided to make an offer to you! 
     <br/> <br/>
-    We will give you an extra 3.1 Euros BONUS. In exchange, you will complete an additional
-    block (Block # 6) of arithmetic questions. 
+    The last Block (Block # 6) will ONLY consist of arithmetic questions
+    you prefer to solve! That means you can AVOID solving question types 
+    you don't want to solve! 
     <br/> <br/>
-    But you will have the option to decide the
-    type of arithmetic questions the last block will consist of.  
+    To allow for that, we give you extra money (3.1 Euros) 
+    you can spend to AVOID REPEATING the type of questions you solved. 
+    By spending more of your extra money on avoiding a question type, 
+    you will make that question type LESS LIKELY to REPEAT as your last Block.
+      <br/> <br/>
+    In the next screen, we will ask you indicate the maximum amount of money (up to 3.1 euros) 
+    you would be willing to spend in order to AVOID the type of questions you just solved.
     <br/> <br/>
-    In the next screen, you will get to indicate how much of this extra 3.1 Euros you would
-    be willing to let go to AVOID the type of aritmetic question you just performed.
-    And we will ask the same question to you after you complete EACH BLOCK : each question type.
+    After you indicate how much of your extra money you are willing to 
+    use for avoiding this type of question, 
+    we will randomly draw a number between 0 and 3.1 euros.
+    If the number we draw is greater than yours, 
+    then you will have to REPEAT this type of 
+    question without spending money. 
+    However, if the number I draw is equal to or less than yours, 
+    you will AVOID REPEATING this 
+    question type by spending the money we drew.
     <br/> <br/>
-    Based on how much of your money you'd be willing to spend on avoiding each question type,
-    we will determine the LIKELIHOOD you will solve that question type for your last block. 
-    As a result, you will receive the amount you chose to discount for that question type. 
+    It's actually really simple: you don't want to repeat this block? spend more of your extra money.
+    You want to repeat this block? Spend less of your money. 
     <br/> <br/>
-    Please note that your accuracy in performing the arithmetic questions
-    DOES NOT AFFECT whether you will earn this BONUS amount as long as you TRY YOUR BEST.`,
+    We will make the same offer to you after you complete each subsequent block, 
+    so you will get to indicate how much you would spend to avoid other question types as well!
+    One of your responses to these questions will be randomly selected and influence your final block and 
+    your extra pay! And you have 3.1 euros to spend for each question type and not in total!
+      <br/> <br/>
+    Please note that your ACCURACY in solving the arithmetic questions
+    DOES NOT AFFECT whether you will earn the extra amount as long as you TRY YOUR BEST
+    and continue solving each block in your mind and without guessing or using any other tools.
+    </div>`,
 
-  offerRest: `Please make the same BONUS decision for this question type and decide the
-  type of arithmetic questions the last block will consist of. 
+  offerRest: `<div class="text-left">
+    Please make the same AVOID decision for this block. 
     <br/> <br/>
-    Please keep in mind that your accuracy in performing the arithmetic questions
-    DOES NOT AFFECT whether you will earn this BONUS amount as long as you TRY YOUR BEST.`,
+    Remember: After you indicate how much of your extra money you are willing to 
+    use for avoiding this type of question, 
+    we will randomly draw a number between 0 and 3.1 euros.
+    If the number we draw is greater than yours, 
+    then you will have to REPEAT this type of 
+    question without spending money. 
+    However, if the number I draw is equal to or less than yours, 
+    you will AVOID REPEATING this 
+    question type by spending the money we drew.
+    <br/> <br/>
+    It's actually really simple: you don't want to repeat this block? spend more of your extra money.
+    You want to repeat this block? Spend less of your money.     
+    <br/> <br/>
+     Please note that your ACCURACY in solving the arithmetic questions
+    DOES NOT AFFECT whether you will earn the extra amount as long as you TRY YOUR BEST
+    and continue solving each block in your mind and without guessing or using any other tools.
+    </div>`,
 
-  exit: `The experiment is over! 
-    <br/> <br/>
-    Thank you for your participation!.`,
+  bonus: `Great! You completed the experiment! 
+    Your extra pay will be determined based on your responses and reflected on your pay.
+    Thank you for your participation!`,
+
+  exit: `Moving onto inventories...`,
 }
 
 // export default {

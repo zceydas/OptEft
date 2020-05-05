@@ -322,12 +322,17 @@ textarea {
     cursor: pointer;
   }
 
-  #welcome-screen {
-    font-size: 36px;
+  #welcome-screen,
+  #new-phase-scene {
+    font-size: 30px;
   }
 
   #welcome-screen h1 {
-    font-size: 60px;
+    font-size: 30px;
+  }
+
+  #welcome-screen #welcome-2 {
+    display: none;
   }
 
   .message {
@@ -336,6 +341,11 @@ textarea {
 
   .scene {
     display: none;
+  }
+
+  .equations-message {
+    font-size: 20px;
+    color: grey;
   }
 
   #fixation {
