@@ -20,6 +20,7 @@ import { generateEquation } from './equations.js'
 
 export function optEft() {
   const $SCENES = $('.scene')
+  const $EQUATION_MESSAGE = $('.equations-message')
   const $EQUATION_FORM = $('form#equation')
   const $INPUT_ANSWER = $EQUATION_FORM.find(':input').eq(0)
   const $ACCURACY_DISPLAY = $('#accuracy-display')
@@ -29,9 +30,11 @@ export function optEft() {
   const maxBlock = 6 // should be 10
   const noTrialsToAvg = 5 // this is the number of trials needed in Capacity _phase to move on to the next difficulty level
   const maxTrials = 10 // maximum number of trials to present in the experimental conditions
+  let _OfferChoicePick = []
   let _expPhases = [1, 2, 3, 4]
-  let _colorNames = ['orange', 'green', 'blue', 'red']
+  let _colorNames = ['saddlebrown', 'green', 'blue', 'red']
   _colorNames = shuffle(_colorNames)
+  console.log(_colorNames)
   let _taskType = 'Capacity'
   let _previousTaskType = null
   let _currentScene = null
@@ -42,23 +45,21 @@ export function optEft() {
   let _blockName = null
 
   _expPhases = shuffle(_expPhases)
+  //_expPhases.unshift(1)
+  console.log(_expPhases)
   const data = [
     [1, 1],
-    [0.8, 2],
-    [0.8, 3],
-    [0.6, 4],
-    [0.4, 5],
-    [0.6, 6],
-    [0.2, 7],
-    [0.2, 8],
-    [0, 9],
+    [1, 2],
+    [1, 3],
+    [0.8, 4],
+    [0, 5],
   ]
-  let _OfferChoicePick = []
-  let _fitresult = regression.polynomial(data, { order: 3 })
+  let _fitresult = regression.polynomial(data, { order: 2 })
   let _easyTaskDifficulty = Math.round(_fitresult.predict(0.75)[1])
   let _intermediateTaskDifficulty = Math.round(_fitresult.predict(0.5)[1])
   let _difficultTaskDifficulty = Math.round(_fitresult.predict(0.2)[1])
   console.log(_easyTaskDifficulty, _intermediateTaskDifficulty, _difficultTaskDifficulty)
+  checkCapacityMeasures()
   let _tasklevels = []
   let _clock
   let _previousLevel
@@ -96,7 +97,7 @@ export function optEft() {
         if (_phase > 1 && _trialcounter === 0) {
           // console.log('_phase > 1 && _trialcounter === 1')
           time = 4000 + 1000 * Math.random()
-          setFixationIcon(_blockName)
+          setFixationIcon(_blockName + ' / ' + _taskID)
           setTimeout(() => {
             setFixationIcon('+')
           }, 1999)
@@ -109,6 +110,7 @@ export function optEft() {
 
         break
       case 1:
+        $EQUATION_MESSAGE.hide()
         $('#equation-display').text(_currentEquation)
         time = 18000
         setTimeout(function () {
@@ -116,12 +118,17 @@ export function optEft() {
         }, 10)
         _equationStart = performance.now() // Date.now()
         _currentEquation = generateEquation(_currentLevel)
-
         $('#equation-display').text(_currentEquation)
+        $INPUT_ANSWER.keydown(function () {
+          $EQUATION_MESSAGE.show()
+        })
         break
       case 2:
         // Default to prepare next trial by setting sceneIndex to -1 to increment to 0 (fixation)
+        $EQUATION_MESSAGE.hide()
         sceneIndex = -1
+        _RT = performance.now() - _equationStart // Date.now() - _equationStart
+        console.log(_RT)
         determineAccuracy()
         _previousLevel = _currentLevel
         _previousTaskType = _taskType
@@ -149,6 +156,7 @@ export function optEft() {
             $('#scenes').hide()
             $('#exit-scene').show()
             //  gorillaTaskBuilder.forceAdvance()
+            // useModal(_$INSTRUCTIONS.bonus)
             DisplayFinish() // I don't like this.
           } else {
             setupQuestionaire()
@@ -258,16 +266,17 @@ export function optEft() {
     // below we fit participant's data with a polynomial function and infer the
     // difficulty levels of the upcoming _phases
     // startPhase()
-    _fitresult = regression.polynomial(_avgCounter, { order: 3 })
+    _fitresult = regression.polynomial(_avgCounter, { order: 2 })
     // insert -> if not a number, pick the simplest values
     _easyTaskDifficulty = Math.round(_fitresult.predict(0.75)[1]) // add Math.round to this !!!
     _intermediateTaskDifficulty = Math.round(_fitresult.predict(0.5)[1])
     _difficultTaskDifficulty = Math.round(_fitresult.predict(0.2)[1])
-    if (isNaN(_easyTaskDifficulty) === true) {
-      _easyTaskDifficulty = 2
-      _intermediateTaskDifficulty = 4
-      _difficultTaskDifficulty = 6
-    }
+    console.log(_easyTaskDifficulty, _intermediateTaskDifficulty, _difficultTaskDifficulty)
+
+    checkCapacityMeasures()
+    console.log('_easyTaskDifficulty: ', _easyTaskDifficulty)
+    console.log('_intermediateTaskDifficulty: ', _intermediateTaskDifficulty)
+    console.log('_difficultTaskDifficulty: ', _difficultTaskDifficulty)
 
     //
     _tasklevels.push(
@@ -275,6 +284,7 @@ export function optEft() {
       Math.round(_intermediateTaskDifficulty[1]),
       Math.round(_difficultTaskDifficulty[1]),
     )
+    console.log(_tasklevels)
     _currentLevel = determinePhaseType()
   }
 
@@ -298,7 +308,7 @@ export function optEft() {
     _OfferChoicePick = fillArray(_expPhases[_phase - 2], Math.round(((3.1 - inArr[0].value) / 3.1) * 10))
 
     //_OfferChoicePick.push([Math.round(((3.1 - inArr[0].value) / 3.1) * 10), _expPhases[_phase - 2]])
-    console.log(_OfferChoicePick)
+    console.log('_OfferChoicePick: ', _OfferChoicePick)
     console.log(inArr)
     inArr.forEach((q) => {
       gorilla.metric({
@@ -334,7 +344,6 @@ export function optEft() {
 
   function saveResponse() {
     // performance during arithmetic summations
-    _RT = performance.now() - _equationStart // Date.now() - _equationStart
     _responseData.level = _currentLevel
     _responseData.trial = _trialcounter
     _responseData.RT = _RT
@@ -351,6 +360,7 @@ export function optEft() {
       answer: _responseData.answer,
       phase: _phase,
       taskType: _taskType,
+      taskColor: _taskName,
     })
 
     _responseData = {
@@ -365,6 +375,42 @@ export function optEft() {
     // SAVE: Local dev
     localStorage.setItem('SessionData', JSON.stringify(_$SESSIONMODEL))
     // SAVE: Gorilla API
+  }
+
+  function checkCapacityMeasures() {
+    if (
+      isNaN(_easyTaskDifficulty) === true ||
+      isNaN(_intermediateTaskDifficulty) === true ||
+      isNaN(_difficultTaskDifficulty) === true
+    ) {
+      _easyTaskDifficulty = 2
+      _intermediateTaskDifficulty = 4
+      _difficultTaskDifficulty = 6
+    }
+    if (_easyTaskDifficulty === 1) {
+      _easyTaskDifficulty = _easyTaskDifficulty + 1
+    }
+    if (_easyTaskDifficulty === _intermediateTaskDifficulty) {
+      _intermediateTaskDifficulty = _intermediateTaskDifficulty + 1
+    }
+    if (_intermediateTaskDifficulty === _difficultTaskDifficulty) {
+      _difficultTaskDifficulty = _difficultTaskDifficulty + 1
+    }
+    if (
+      _easyTaskDifficulty > _intermediateTaskDifficulty ||
+      _intermediateTaskDifficulty > _difficultTaskDifficulty ||
+      _easyTaskDifficulty > _difficultTaskDifficulty
+    ) {
+      _easyTaskDifficulty = 2
+      _intermediateTaskDifficulty = 4
+      _difficultTaskDifficulty = 6
+    }
+    if (_easyTaskDifficulty <= 0 || _intermediateTaskDifficulty <= 0 || _easyTaskDifficulty <= 0) {
+      _easyTaskDifficulty = 2
+      _intermediateTaskDifficulty = 4
+      _difficultTaskDifficulty = 6
+    }
+    console.log(_easyTaskDifficulty, _intermediateTaskDifficulty, _difficultTaskDifficulty)
   }
 
   function determineAccuracy() {
@@ -423,19 +469,21 @@ export function optEft() {
         }
         $INFOSCENE.show()
         // !!! start here the output doesn't pop up
+        //  if (_phase > 2) {
         form.prepend(`
         <div class="questionaire-layout">
           <label for="qf-${i}"><h1>${q}</h1></label>
           <br />
           <div class="questionaire-input">
-            <span class="min-text">0.1 €</span>
-            <input type="range" class="slider" id="qf-${i}" name="qf-${i}" min="0.1" max="3" step="0.1">
-            <span class="max-text">3 €</span>
+            <span class="min-text">0 €</span>
+            <input type="range" class="slider" id="qf-${i}" name="qf-${i}" min="0" max="3.1" step="0.1">
+            <span class="max-text">3.1 €</span>
             <div class="slider-value"></div>
           </div>
         </div>
         </div>
       `)
+        //  }
         // this below code shows the selected offer amount online
         $('.slider').on('input', (e) => {
           console.log($('.slider-value'))
@@ -495,7 +543,13 @@ export function optEft() {
   function newPhaseSceneText() {
     $NEWPHASESCENE
       .find('.instructions')
-      .text('You completed Block #' + (_phase - 1) + '.' + ' Click START to start Block #' + _phase)
+      .text(
+        'Great! You completed Block #' +
+          (_phase - 1) +
+          '.' +
+          ' Take a brief break and then click START to start Block #' +
+          _phase,
+      )
   }
 
   function inventoryQuestionText() {
@@ -517,6 +571,13 @@ export function optEft() {
     e.preventDefault()
     $('#welcome-screen').hide()
     transition(0)
+  })
+
+  // Welcome screen page 1 to page 2
+  $('.welcome-next-button').on('click keypress', (e) => {
+    e.preventDefault()
+    $('#welcome-1').hide()
+    $('#welcome-2').show()
   })
 
   // transition starts when the button is pressed (welcome screen)
@@ -546,7 +607,8 @@ export function optEft() {
     $NEWPHASESCENE.show()
   })
 
-  $('#welcome-screen').find('.message').html(_$INSTRUCTIONS.welcome)
+  $('#welcome-screen').find('#welcome-1 .message').html(_$INSTRUCTIONS.welcome)
+  $('#welcome-screen').find('#welcome-2 .message').html(_$INSTRUCTIONS.welcome2)
 
   // Close modal
   window.onclick = (e) => {

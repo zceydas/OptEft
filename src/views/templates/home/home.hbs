@@ -3,8 +3,14 @@
 <div id='app-wrapper' class='align-middle'>
     <!-- infinite -->
     <div id='welcome-screen' class='info-scene'>
-        <div class='message'>Welcome to OptEft!</div>
-        <button class='start-button'>Start</button>
+        <div id="welcome-1">
+            <div class='message'>Welcome to OptEft!</div>
+            <button class='welcome-next-button'>Next</button>
+        </div>
+        <div id="welcome-2">
+            <div class='message'>Welcome to OptEft!</div>
+            <button class='start-button'>Start</button>
+        </div>
     </div>
     <div id='scenes'>
         <!-- maximum 18-RT secs, otherwise 2 s -->
@@ -14,8 +20,11 @@
         <!-- maximum 18 s or response time -->
         <div id='equations' class='scene'>
             <form id='equation'>
-                <div id='equation-display' class='question message'>5+5</div>
+                <div id='equation-display' onselectstart="return false" onpaste="return false;" onCopy="return false"
+                    onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off/
+                    class='question message'>5+5</div>
                 <input type='number' name='answer-equations' autocomplete='off'>
+                <div class='equations-message'>Press ENTER to submit your response</div>
             </form>
         </div>
         <!-- 2 s -->
@@ -37,17 +46,20 @@
                 </div>
             </div>
             <div id='new-phase-scene'>
-                <div class='instructions'>Great! You completed Block # 1! Following Blocks will take around 5 minutes
+                <div class='instructions text-left'>Great! You completed Block # 1! Subsequent Blocks will take around 5
+                    minutes
                     each. At the end of each Block, you will respond to questions about how much you liked solving the
                     questions in that Block. You will also notice that fixation cross (+) screens might be sometimes
                     very short or very long. Continue looking at the screen during these screens and wait for the next
-                    problem to come up. Now, please click START to move onto Block # 2. </div>
+                    problem to come up. <br /> <br /> Now, take a brief break and then please click START to move onto
+                    Block # 2.
+                </div>
                 <button class='phase-continue-button'>Start</button>
             </div>
         </div>
     </div>
     <div id='exit-scene'>
-        <h1 class='message'>The experiment is over! Thank you for your participation!</h1>
+        <h1 class='message'>The experiment is over! Moving onto questionnaires...</h1>
     </div>
 </div>
 
